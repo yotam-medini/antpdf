@@ -1,10 +1,7 @@
-128 lines (120 sloc)  2.1 KB
 # antpdf.py input for IMSLP24187-PMLP03277-bwv021.pdf
 #
 # Usage:
-#  antpdf.py -i bwv-021.ann IMSLP24187-PMLP03277-bwv021.pdf bwv021-barnums.pdf
-#
-# Author:  Yotam Medini  yotam.medini@gmail.com -- Created: 2017/January/06
+#   antpdf.py -i bwv244-peters.ann bwv-244-peters.pdf bwv-244-peters-bars.pdf
 #
 
 # :page:x:y:font:size:text
@@ -36,3 +33,25 @@
 :17:95:765:::86
 ::100:405:::88
 
+# Movement 2
+:18:90:640:::3
+::90:512:::6
+
+# Movement 3
+:18:80:276:::6
+
+# Movement 5
+:20:100:760:::4
+
+# ???
+
+# Movement 16
+:31:90:400:::7
+
+# Movement 21
+:38:95:668:::5
+::95:572:::11
+
+# Movement 23
+:39:90:380:::5
+::90:280:::11
