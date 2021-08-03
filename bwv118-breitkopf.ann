@@ -1,0 +1,58 @@
+# antpdf.py input for IMSLP24291-PMLP04365-bwv118.pdf
+# Remobing Englis translation, adding verse 11 instead.
+#
+#   Usage:
+#     antpdf3.py -i bwv118-breitkopf.ann \
+#       IMSLP24291-PMLP04365-bwv118.pdf bwv118-add-v11-del-english.pdf
+#
+
+# :page:x:y:font:size:text
+
+###########
+# Verse 11
+#
+#  Auf deinen Abschied, Herr, ich trau',
+#  Darauf mein' letzte Heimfahrt bau';
+#  Tu mir die Himmelstür weit auf,
+#  Wenn ich beschließ' mein's Lebens Lauf
+#
+
+#############
+## Page 2 
+## Sys 1 Sop
+blank:2:200:702:40:10
+:2:200:700:Times-Roman:12:Auf
+blank:2:280:::
+::282::::Dei
+blank:2:360:::
+::360::::nen
+blank:2:450::60:
+::454::::Ab
+## Sys 1 Alt
+blank:2:150:638:40:12
+:2:156:638:::Auf
+blank:2:200::60:12
+::200::::Dei -
+::236::::nen
+blank::276::80:12
+::279::::Ab -
+::314::::schied
+blank::360::40:12
+::362::::Herr
+## Sys 1 Ten
+blank::230:580:40:12
+::232:580:::Auf
+blank::280::70:
+::280::::Dei -
+::318::::nen
+blank::360::70:
+::360::::Ab-
+::378::::schied
+::412::::Herr
+blank::454::100:
+::454::::-    -    -
+::524::::ich
+## Sys 1 Bas
+blank::498:526:40:12
+::498:528:::Auf
+
