@@ -21,7 +21,9 @@
 ## Page 2 
 ## Sys 1 Sop
 blank:2:200:702:40:10
-:2:200:700:Times-Roman:12:Auf
+# :2:200:700:Times-Roman:12:Auf
+# :2:200:700:Times-BoldItalic:12:Auf
+:2:200:700:Times-Bold:12:Auf
 blank:2:280:::
 ::282::::Dei
 blank:2:360:::
@@ -38,7 +40,7 @@ blank::276::80:12
 ::279::::Ab -
 ::314::::schied
 blank::360::40:12
-::362::::Herr
+::362::::Herr,
 ## Sys 1 Ten
 blank::230:580:40:12
 ::232:580:::Auf
@@ -48,7 +50,7 @@ blank::280::70:
 blank::360::70:
 ::360::::Ab-
 ::378::::schied
-::412::::Herr
+::412::::Herr,
 blank::454::100:
 ::454::::-    -    -
 ::524::::ich
@@ -61,7 +63,7 @@ blank::498:526:40:12
 blank::98:300:40:12
 ::98:302:::-schied
 blank::214::40:12
-::214::::Herr
+::214::::Herr,
 blank::314::40:12
 ::314::::ich
 blank::442::40:14
@@ -98,15 +100,53 @@ blank::440::40:14
 ## Page 3
 ## Sys 1 Sop
 ## Sys 1 Alt
+blank:3:82:646:100:14
+:3:88:648:::Ab -
+::118::::schied
+::156::::Herr,
+blank:3:230::40:14
+::234::::ich
+blank:3:276::60:14
+::278::::trau
 ## Sys 1 Ten
+blank::156:590:30:14
+::156:590:::schied,
+blank::190::30:14
+::192::::Herr,
+blank::228::40:14
+::228::::ich
+blank::275::60:14
+::276::::taru,
 ## Sys 1 Bas
+blank::86:536:300:14
+::96:538::: -      -      -
+::194::::Herr,
+::240::::ich
+::284::::trau
 
+## Page 3
 ## Sys 2 Sop
+blank::276:324:30:14
+::284:326:::dar -
+blank::384::40:14
+::384::::- auf
+blank::484::30:14
+::484::::mein
 ## Sys 2 Alt
+blank::336:264:30:14
+::336:264:::dar -
+blank::430::30:14
+::430::::- auf
+blank::524::30:14
+::524::::mein
 ## Sys 2 Ten
+blank::430:210:30:14
+::430:210:::dar -
+blank::524::30:14
+::524::::- auf
 ## Sys 2 Bas
 
-## Page X
+## Page 4
 ## Sys 1 Sop
 ## Sys 1 Alt
 ## Sys 1 Ten
