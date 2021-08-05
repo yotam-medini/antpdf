@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Annotate PDF file
 # Author:  Yotam Medini  yotam.medini@gmail.com -- Created: 2014/May/27
@@ -6,23 +6,30 @@
 import sys
 import string
 
-import StringIO
-import pyPdf
+import io
+import PyPDF2
 import reportlab.pdfgen.canvas
+import reportlab.lib.colors as colors
 
 N_E = 6
 (E_PAGE, E_X, E_Y, E_FONT, E_SIZE, E_TEXT) = range(N_E)
 
-class Annotation:
+class AnnotationBase:
 
-    def __init__(self, s, adef=None):
+    def __init__(self, s, adef):
+        # sys.stderr.write('AnnotationBase: s=%s\n' % s)
         self.sep = s[0]
-        self.v = string.split(s[1:], self.sep)
+        self.v = s[1:].split(self.sep)
         if adef and self.ok():
             # sys.stderr.write("adef.v=%s\n" % str(adef.v))
             for i in range(len(self.v)):
                 if self.v[i] == "":
                     self.v[i] = adef.v[i]
+
+class Annotation(AnnotationBase):
+
+    def __init__(self, s, adef=None):
+        super().__init__(s, adef)
         if self.ok():
             spg = self.v[E_PAGE]
             self.page = int(spg[1:]) if spg[0] == '=' else int(spg) - 1
@@ -31,6 +38,7 @@ class Annotation:
             self.size = int(self.v[E_SIZE])
 
     def ok(self):
+        # sys.stderr.write('ok: #(v)=%d\n' % len(self.v))
         return len(self.v) == N_E
 
 
@@ -43,6 +51,24 @@ class Annotation:
                   self.v[E_FONT], sep, self.size, sep, self.v[E_TEXT]))
         return s
 
+class Blank(AnnotationBase):
+
+    # 'blank:page:x:y:w:h'
+    def __init__(self, a, adef=None):
+        super().__init__(a, adef)
+        spg = self.v[0]
+        self.page = int(spg[1:]) if spg[0] == '=' else int(spg) - 1
+        self.x = int(self.v[1])
+        self.y = int(self.v[2])
+        self.w = int(self.v[3])
+        self.h = int(self.v[4])
+
+    def ok(self):
+        return True
+
+    def __str__(self):
+        s = "blank:%d:%d:%d:%d" % (self.x, self.y, self.w, self.h)
+        return s
 
 class AntPDF:
     
@@ -102,23 +128,28 @@ Usage:
 
     def fget_annotations(self, fn):
         f = open(fn, "r")
-        a = None
-        for line in f.xreadlines():
+        a = b = None
+        for line in f:
             if line.endswith("\n"):
                 line = line[:-1]
             if len(line) > 2:
-                a_new = Annotation(line, a)
-                if a_new.ok():
-                    a = a_new
-                    self.annotations.append(a)
+                if line.startswith('blank:'):
+                    b_new = Blank(line[5:], b)
+                    b = b_new
+                    self.annotations.append(b)
+                else:
+                    a_new = Annotation(line, a)
+                    if a_new.ok():
+                        a = a_new
+                        self.annotations.append(a)
         f.close()
 
 
     def run(self):
         # Assume annotations are sorted
         self.annotations.sort(key=(lambda a: (a.page, a.y, a.x)))
-        self.pdfin = pyPdf.PdfFileReader(file(self.fn_in, "rb"))
-        self.pdfout = pyPdf.PdfFileWriter()
+        self.pdfin = PyPDF2.PdfFileReader(open(self.fn_in, "rb"))
+        self.pdfout = PyPDF2.PdfFileWriter()
         npages_in = self.pdfin.getNumPages()
         self.verbose("%s has %d pages" % (self.fn_in, npages_in))
         ai = 0
@@ -139,31 +170,45 @@ Usage:
             if (ai_b < ai_e):
                 self.annotate(pi, ai_b, ai_e)
                 pi += 1
-        outputStream = file(self.fn_out, "wb")
+        outputStream = open(self.fn_out, "wb")
         self.pdfout.write(outputStream)
         outputStream.close()
 
     def annotate(self, pi, ai_b, ai_e):
         self.verbose("annotate(pi=%d, ai_b=%d, ai_e=%d)" % (pi, ai_b, ai_e))
-        packet = StringIO.StringIO()
         page = self.pdfin.getPage(pi)
         box = page.mediaBox
         width = int(box[2] - box[0])
         height = int(box[3] - box[1])
         self.verbose("page=%d wh=[%d x %d]" % (pi, width, height))
-        can = reportlab.pdfgen.canvas.Canvas(packet, pagesize=(width, height))
-        # self.verbose("Canvas Fonts: %s" % str(can.getAvailableFonts()))
-        for ai in range(ai_b, ai_e):
-            a = self.annotations[ai]
-            can.setFont(a.v[E_FONT], int(a.size))
-            y = a.y
-            if y < 0:
-                y += height
-            can.drawString(a.x, y, a.v[E_TEXT])
-        can.save()
-        packet.seek(0)
-        ann_pdf = pyPdf.PdfFileReader(packet)
-        page.mergePage(ann_pdf.getPage(0))
+        annotations = []
+        blankss = []
+        for ba_pass in (0, 1):
+            packet = io.BytesIO()
+            can = reportlab.pdfgen.canvas.Canvas(
+                packet, pagesize=(width, height))
+            # self.verbose("Canvas Fonts: %s" % str(can.getAvailableFonts()))
+            merge_needed = False
+            for ai in range(ai_b, ai_e):
+                a = self.annotations[ai]
+                if isinstance(a, Blank) and ba_pass == 0:
+                    sys.stderr.write('Blank: %s\n' % a)
+                    can.setFillColor(colors.white)
+                    can.rect(a.x, a.y, a.w, a.h, stroke=0, fill=1)
+                    merge_needed = True
+                if isinstance(a, Annotation) and ba_pass == 1:
+                    can.setFillColor(colors.black)
+                    can.setFont(a.v[E_FONT], int(a.size))
+                    y = a.y
+                    if y < 0:
+                        y += height
+                    can.drawString(a.x, y, a.v[E_TEXT])
+                    merge_needed = True
+            if merge_needed:
+                can.save()
+                packet.seek(0)
+                ann_pdf = PyPDF2.PdfFileReader(packet)
+                page.mergePage(ann_pdf.getPage(0))
         self.pdfout.addPage(page)
         
 
