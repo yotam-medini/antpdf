@@ -1,5 +1,5 @@
 # antpdf.py input for IMSLP24291-PMLP04365-bwv118.pdf
-# Removing Englis translation, adding verse 11 instead.
+# Removing English translation, adding verse 11 instead.
 #
 #   Usage:
 #     antpdf.py -i bwv118-breitkopf.ann \
