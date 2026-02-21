@@ -1,0 +1,31 @@
+# antpdf.py input for https://test.cpdl.org/wiki/images/7/74/Ws-schz-ca1.pdf
+# Adding bar numbers
+#
+#   Usage:
+#     antpdf.py -i schutz-swv81.ann Ws-schz-ca1.pdf Ws-schz-ca1-barnums.pdf
+#       
+#
+
+# :page:x:y:font:size:text
+:1:46:476:Times-Roman:12:7
+:::282:::13
+:2:44:802:::19
+:::616:::25
+:::434:::31
+:::250:::37
+:3::800:::43
+:::616:::49
+:::434:::55
+:::250:::61
+:4::800:::67
+:::618:::73
+:::438:::79
+:::250:::86
+:5::802:::92
+:::614:::99
+:::428:::106
+:::248:::112
+:6::802:::119
+:::622:::125
+:::438:::131
+:::256:::136
