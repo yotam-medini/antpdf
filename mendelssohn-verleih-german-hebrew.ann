@@ -1,0 +1,24 @@
+# antpdf.py input for mendelssohn-verleih-frieden-scale-1.12.pdf
+# putting Hebrew text instead of Latin.
+# Usage:
+#  antpdf.py -i mendelssohn-verleih-german-hebrew.ann \
+#    mendelssohn-verleih-frieden-scale-1.12.pdf \
+#      Mendelssohn-Verleih_uns_Frieden-Ose_Shalom.pdf
+#
+
+# Lyrics
+#   עוֹשֶׂה שָׁלוֹם בִּמְרוֹמָיו
+#   הוּא יַעֲשֶׂה שָׁלוֹם עָלֵינוּ
+#   וְעַל כָּל יִשְׂרָאֵל, וְאִמְרוּ אָמֵן:
+
+# page:x:y:font:size:lang:dir:text
+# blank:page:x:y:w:h
+
+# Verleih uns Frieden
+1:62:680:DavidCLM:14:he:rtl: Lyrics עוֹשֶׂה שָׁלוֹם
+blank:1:146:340:440:11
+:50:342::10:וֹעֹ-
+:168:הֶׂשֹ
+:190:ָשָׁ
+
+# Latin
